@@ -1,0 +1,30 @@
+{
+  "private": true,
+  "name": "react-use-hooks",
+  "author": "maomao1996 <1714487678@qq.com>",
+  "scripts": {
+    "start": "dumi dev",
+    "docs:build": "dumi build",
+    "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'"
+  },
+  "typings": "dist/index.d.ts",
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx,less,md,json}": [
+      "prettier --write"
+    ],
+    "*.ts?(x)": [
+      "prettier --parser=typescript --write"
+    ]
+  },
+  "dependencies": {
+    "@umijs/preset-react": "1.x",
+    "dumi": "^1.0.5",
+    "lint-staged": "^10.0.7",
+    "prettier": "^1.19.1",
+    "react": "^16.12.0",
+    "yorkie": "^2.0.0"
+  }
+}
