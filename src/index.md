@@ -1,3 +1,3 @@
-# react-use-hooks
+# react-code-snippets
 
-记录一些常用的 hooks
+记录一些 React 代码和学习过程
