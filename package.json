@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@umijs/preset-react": "1.x",
-    "dumi": "^1.0.13",
+    "dumi": "^1.0.20",
     "lint-staged": "^10.0.7",
     "prettier": "^1.19.1",
     "react": "^16.12.0",
