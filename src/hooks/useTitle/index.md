@@ -6,7 +6,7 @@
 
 ```jsx
 import React, { useState } from 'react'
-import useTitle from './index'
+import useTitle from './useTitle'
 import { Button } from 'antd'
 
 const Component = () => {
