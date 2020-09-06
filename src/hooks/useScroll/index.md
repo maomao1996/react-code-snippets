@@ -1,6 +1,6 @@
 # useScroll
 
-用于监听窗体或组件滚动的 `Hook`
+用于监听组件滚动的 `Hook`
 
 ## 示例
 
@@ -12,12 +12,12 @@ import React from 'react'
 import useScroll from './index'
 
 export default () => {
-  const [{ x, y }, ref] = useScroll()
+  const [ref, { x, y }] = useScroll()
 
   return (
     <>
-      <div>当前 scrollLeft : {x}</div>
-      <div>当前 scrollTop : {y}</div>
+      <div>当前组件的 scrollLeft : {x}</div>
+      <div>当前组件的 scrollTop : {y}</div>
       <div ref={ref} style={{ height: '25vh', overflow: 'auto' }}>
         <div style={{ width: '500vw', height: '500vh' }}>这是一个滚动组件</div>
       </div>
@@ -26,43 +26,20 @@ export default () => {
 }
 ```
 
-```jsx
-/**
- * title: 窗体滚动 demo
- */
-import React from 'react'
-import useScroll from './index'
-
-export default () => {
-  const [{ x, y }] = useScroll(({ x, y }) => {
-    console.log('window', x, y)
-  })
-
-  return (
-    <>
-      <div>当前窗口的 scrollLeft : {x}</div>
-      <div>当前窗口的 scrollTop : {y}</div>
-    </>
-  )
-}
-```
-
 ## API
 
 ```js
-useScroll(fn: ({ x, y }) => {})
+const [ref] = useScroll(fn: ({ x, y }) => {})
 
-const [{ x, y }] = useScroll(fn)
-
-const [{ x, y }, ref] = useScroll(fn)
+const [ref, { x, y }] = useScroll()
 ```
 
 ### Result
 
 | 参数     | 作用                          |
 | -------- | ----------------------------- |
-| { x, y } | 滚动容器当前的滚动位置        |
 | ref      | 需要监听滚动事件的 `dom` 元素 |
+| { x, y } | 滚动容器当前的滚动位置        |
 
 ### Params
 

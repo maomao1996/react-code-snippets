@@ -10,19 +10,11 @@ const useScroll = (callback) => {
 
   useEffect(() => {
     // 获取绑定滚动 dom
-    const element = ref.current ? ref.current : window
+    const element = ref.current
     const updateState = () => {
-      let newState
-      if (element === window) {
-        newState = {
-          x: window.pageXOffset,
-          y: window.pageYOffset
-        }
-      } else {
-        newState = {
-          x: element.scrollLeft,
-          y: element.scrollTop
-        }
+      const newState = {
+        x: element.scrollLeft,
+        y: element.scrollTop
       }
       setState(newState)
       return newState
@@ -40,7 +32,7 @@ const useScroll = (callback) => {
       }
     }
   }, [ref.current])
-  return [state, ref]
+  return [ref, state]
 }
 
 export default useScroll
