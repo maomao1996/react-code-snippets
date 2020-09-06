@@ -6,7 +6,7 @@
 
 ```jsx
 import React, { useState } from 'react'
-import useTitle from './useTitle'
+import useTitle from './index'
 import { Button } from 'antd'
 
 const Component = () => {
@@ -18,7 +18,7 @@ export default () => {
   const [state, setState] = useState(false)
 
   const change = () => {
-    setState(v => !v)
+    setState((v) => !v)
   }
   return (
     <>

@@ -9,7 +9,7 @@
  * title: 组件滚动 demo
  */
 import React from 'react'
-import useScroll from './useScroll'
+import useScroll from './index'
 
 export default () => {
   const [{ x, y }, ref] = useScroll()
@@ -31,7 +31,7 @@ export default () => {
  * title: 窗体滚动 demo
  */
 import React from 'react'
-import useScroll from './useScroll'
+import useScroll from './index'
 
 export default () => {
   const [{ x, y }] = useScroll(({ x, y }) => {

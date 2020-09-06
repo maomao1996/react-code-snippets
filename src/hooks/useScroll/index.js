@@ -2,9 +2,9 @@ import { useState, useEffect, useRef } from 'react'
 
 // 滚动
 
-const isFunction = f => typeof f === 'function'
+const isFunction = (f) => typeof f === 'function'
 
-const useScroll = callback => {
+const useScroll = (callback) => {
   const [state, setState] = useState({ x: 0, y: 0 })
   const ref = useRef()
 
