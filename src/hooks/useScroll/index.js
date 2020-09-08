@@ -1,37 +1,36 @@
 import { useState, useEffect, useRef } from 'react'
 import { isFunction } from '../../utils'
 
-// 滚动
+// 局部滚动 hook
 
 const useScroll = (callback) => {
-  const [state, setState] = useState({ x: 0, y: 0 })
-  const ref = useRef()
+  const [position, setPosition] = useState({ x: 0, y: 0 })
+  const ref = useRef(null)
 
   useEffect(() => {
+    if (ref.current === null) {
+      return
+    }
     // 获取绑定滚动 dom
     const element = ref.current
-    const updateState = () => {
-      const newState = {
+    const updatePosition = () => {
+      const newPosition = {
         x: element.scrollLeft,
         y: element.scrollTop
       }
-      setState(newState)
-      return newState
+      setPosition(newPosition)
+      return newPosition
     }
-    const scrollFn = () => {
-      const newState = updateState()
-      isFunction(callback) && callback(newState)
+    const handler = () => {
+      const newPosition = updatePosition()
+      isFunction(callback) && callback(newPosition)
     }
-    if (element) {
-      element.addEventListener('scroll', scrollFn, { passive: true })
-    }
+    element.addEventListener('scroll', handler, { passive: true })
     return () => {
-      if (element) {
-        element.removeEventListener('scroll', scrollFn)
-      }
+      element.removeEventListener('scroll', handler)
     }
   }, [ref.current])
-  return [ref, state]
+  return [ref, position]
 }
 
 export default useScroll

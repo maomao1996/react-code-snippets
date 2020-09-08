@@ -1,30 +1,30 @@
 import { useState, useEffect } from 'react'
 import { isFunction } from '../../utils'
 
-// 滚动
+//  窗体滚动 hook
 
 const useWindowScroll = (callback) => {
-  const [state, setState] = useState({ x: 0, y: 0 })
+  const [position, setPosition] = useState({ x: 0, y: 0 })
 
   useEffect(() => {
-    const updateState = () => {
-      const newState = {
+    const updatePosition = () => {
+      const newPosition = {
         x: window.pageXOffset,
         y: window.pageYOffset
       }
-      setState(newState)
-      return newState
+      setPosition(newPosition)
+      return newPosition
     }
-    const scrollFn = () => {
-      const newState = updateState()
-      isFunction(callback) && callback(newState)
+    const handler = () => {
+      const newPosition = updatePosition()
+      isFunction(callback) && callback(newPosition)
     }
-    window.addEventListener('scroll', scrollFn, { passive: true })
+    window.addEventListener('scroll', handler, { passive: true })
     return () => {
-      window.removeEventListener('scroll', scrollFn)
+      window.removeEventListener('scroll', handler)
     }
   }, [])
-  return state
+  return position
 }
 
 export default useWindowScroll
