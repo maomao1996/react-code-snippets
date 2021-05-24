@@ -1,0 +1,22 @@
+.demo {
+  display: inline-block;
+  border-radius: 4px;
+  padding: 12px;
+  background-color: #fd482f;
+  text-align: center;
+  .number-flip-item {
+    font-family: PingFangSC-Semibold;
+    font-size: 28px;
+    font-weight: 600;
+    color: #fff5b8;
+    text-shadow: 0 2px 4px #ef1d04;
+  }
+  .number-flip-number {
+    width: 30px;
+    background-image: url('./main_img_prizepoolbg.png');
+    background-size: 100% 100%;
+    & + & {
+      margin-left: 4px;
+    }
+  }
+}

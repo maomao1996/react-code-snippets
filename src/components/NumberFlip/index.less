@@ -1,0 +1,18 @@
+.number-flip {
+  overflow: hidden;
+  &-item {
+    display: inline-flex;
+    height: 100%;
+    &-wrap {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+      transform: translate3d(0, 0, 0);
+      transition: all 0.3s ease-in-out;
+    }
+    &-inner {
+      width: 100%;
+    }
+  }
+}
