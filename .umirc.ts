@@ -5,5 +5,8 @@ export default defineConfig({
   title: 'React 学习笔记',
   favicon: '/favicon.ico',
   logo: '/logo.png',
-  locales: [['zh-CN', '中文']]
+  locales: [['zh-CN', '中文']],
+  // 预渲染
+  exportStatic: {},
+  mfsu: {}
 })
