@@ -6,6 +6,8 @@
 
 ```jsx
 import React, { useState } from 'react'
+import { Button } from 'antd'
+
 import useTitle from './index'
 
 const Component = () => {
@@ -17,14 +19,14 @@ export default () => {
   const [state, setState] = useState(false)
 
   const handleClick = () => {
-    setState(v => !v)
+    setState((v) => !v)
   }
 
   return (
     <>
-      <button type="primary" onClick={handleClick}>
+      <Button type="primary" onClick={handleClick}>
         切换页面标题
-      </button>
+      </Button>
       {state && <Component></Component>}
     </>
   )

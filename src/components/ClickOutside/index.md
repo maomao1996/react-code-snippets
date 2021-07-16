@@ -6,14 +6,14 @@
 
 ```jsx
 import React, { useState } from 'react'
-import { Button } from 'antd'
+import { Button, Card } from 'antd'
 
 import ClickOutside from './index'
 
 export default () => {
   const [state, setState] = useState(false)
 
-  const handleClickOutside = event => {
+  const handleClickOutside = (event) => {
     setState(false)
     console.log('event', event)
   }
@@ -25,19 +25,23 @@ export default () => {
       </Button>
       {state && (
         <ClickOutside onClickOutside={handleClickOutside}>
-          <div
+          <Card
+            title="这是一个弹窗"
             style={{
               position: 'fixed',
               top: '30vh',
-              left: '30vw',
-              zIndex: 10,
-              width: '40vw',
-              height: '30vw',
-              background: '#abcdef'
+              left: '40vw',
+              zIndex: 10
             }}
           >
-            我是一个弹窗（点击弹窗外会关闭）
-          </div>
+            <div style={{ width: '20vw' }}>
+              <p>点击弹窗外会关闭</p>
+              <p>点击弹窗外会关闭</p>
+              <p>点击弹窗外会关闭</p>
+              <p>点击弹窗外会关闭</p>
+              <p>点击弹窗外会关闭</p>
+            </div>
+          </Card>
         </ClickOutside>
       )}
     </>

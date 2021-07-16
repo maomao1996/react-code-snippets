@@ -8,6 +8,8 @@
 
 ```jsx
 import React, { useState, useEffect } from 'react'
+import { Button, Space } from 'antd'
+
 import NumberFlip from './index'
 
 export default () => {
@@ -15,7 +17,7 @@ export default () => {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCount(v => v + 1)
+      setCount((v) => v + 1)
     }, 1e3)
     return () => {
       clearInterval(timer)
@@ -32,14 +34,12 @@ export default () => {
       <NumberFlip count={count} precision />
       3 位小数
       <NumberFlip count={count} precision={3} />
-      <div>
-        <button type="primary" onClick={() => setCount(v => v + 1)}>
+      <Space>
+        <Button type="primary" onClick={() => setCount((v) => v + 1)}>
           +1
-        </button>
-        <button type="primary" onClick={() => setCount(v => v - 1)}>
-          -1
-        </button>
-      </div>
+        </Button>
+        <Button onClick={() => setCount((v) => v - 1)}>-1</Button>
+      </Space>
     </>
   )
 }
