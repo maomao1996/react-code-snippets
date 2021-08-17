@@ -1,4 +1,6 @@
-import React, { createContext, useContext, useReducer, useCallback, useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
+import { createStore } from 'redux'
+import { Provider, useSelector, useDispatch } from 'react-redux'
 
 type ReducerAction =
   | {
@@ -25,12 +27,10 @@ interface OverlayProviderProps {
   children: React.ReactNode
 }
 
-const overlayCallbacks: { [key: string]: (value: any) => void } = {}
-const defaultOverlay = {}
 const SHOW = 'overlay/show'
 const HIDE = 'overlay/hide'
 
-function overlayReducer(state = defaultOverlay, action: ReducerAction): Store {
+function overlayReducer(state = {}, action: ReducerAction): Store {
   switch (action.type) {
     case SHOW:
       return {
@@ -47,16 +47,10 @@ function overlayReducer(state = defaultOverlay, action: ReducerAction): Store {
   }
 }
 
-const OverlayContext = createContext<{
-  store: Store
-  dispatch: React.Dispatch<ReducerAction>
-} | null>(null)
-
-// 创建 Provider 并用 useReducer 管理数据
+// 创建 store
+const store = createStore<Store, ReducerAction, unknown, unknown>(overlayReducer)
 export const OverlayProvider = ({ children }: OverlayProviderProps) => {
-  const [store, dispatch] = useReducer(overlayReducer, defaultOverlay)
-
-  return <OverlayContext.Provider value={{ store, dispatch }}>{children}</OverlayContext.Provider>
+  return <Provider store={store}>{children}</Provider>
 }
 
 const DEFAULT_EMPTY = {}
@@ -65,44 +59,20 @@ const DEFAULT_EMPTY = {}
  * 通过 overlayId 和组件关联
  */
 export const useOverlay = (overlayId: string) => {
-  const context = useContext(OverlayContext)
+  const dispatch = useDispatch()
 
-  // 防止 useOverlay 在 <OverlayProvider> 之外调用
-  if (!context) {
-    throw new Error('useOverlay must be used within a <OverlayProvider>')
-  }
-
-  const { store, dispatch } = context
-
-  /** 显示 Overlay */
   const show = useCallback(
     (params: any) => {
-      return new Promise(resolve => {
-        overlayCallbacks[overlayId] = resolve
-        dispatch({ type: SHOW, payload: { overlayId, params } })
-      })
+      dispatch({ type: SHOW, payload: { overlayId, params } })
     },
-    [overlayId]
+    [overlayId, dispatch]
   )
 
-  /** 隐藏 Overlay */
   const hide = useCallback(() => {
     dispatch({ type: HIDE, payload: { overlayId } })
-    delete overlayCallbacks[overlayId]
-  }, [overlayId])
+  }, [overlayId, dispatch])
 
-  /** 执行 show 方法的 resolve 回调 */
-  const resolve = useCallback(
-    (result: any) => {
-      if (overlayCallbacks[overlayId]) {
-        overlayCallbacks[overlayId](result)
-        delete overlayCallbacks[overlayId]
-      }
-    },
-    [overlayId]
-  )
-
-  const { visible, params } = useMemo(() => store[overlayId] || DEFAULT_EMPTY, [store, overlayId])
+  const { visible, params } = useSelector((s: Store) => s[overlayId] || DEFAULT_EMPTY)
 
   return useMemo(
     () =>
@@ -110,8 +80,7 @@ export const useOverlay = (overlayId: string) => {
         visible,
         params,
         show,
-        hide,
-        resolve
+        hide
       } as const),
     [visible, params, show, hide]
   )

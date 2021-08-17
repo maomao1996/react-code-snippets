@@ -23,12 +23,8 @@ const ModalOverlay = createOverlay('ModalOverlay', ({ visible, hide, resolve }) 
 const Page = () => {
   const overlay = useOverlay('ModalOverlay')
 
-  const handleClick = () => {
-    overlay.show()
-  }
-
   return (
-    <Button type="primary" onClick={handleClick}>
+    <Button type="primary" onClick={() => overlay.show()}>
       打开弹窗
     </Button>
   )
@@ -172,6 +168,140 @@ export default () => {
     <OverlayProvider>
       <Page />
       <UserFormOverlay />
+    </OverlayProvider>
+  )
+}
+```
+
+## 性能问题
+
+当 `Provider` 的 `value` 值发生变化时，它内部的所有消费组件都会重新渲染。`Provider` 及其内部 `consumer` 组件都不受制于 `shouldComponentUpdate` 函数，因此当 `consumer` 组件在其祖先组件退出更新的情况下也能更新。
+
+[Context.Provider 文档](https://zh-hans.reactjs.org/docs/context.html#contextprovider)
+
+### Context 案例
+
+> 展示任何一个弹窗会触发所有组件的重新渲染（F12 查看控制台信息）
+
+```jsx
+import React from 'react'
+import { Button, Modal } from 'antd'
+import 'antd/dist/antd.css'
+
+import { OverlayProvider, useOverlay, createOverlay } from './index.tsx'
+
+const ModalOverlay1 = createOverlay('ModalOverlay1', ({ visible, hide, resolve }) => {
+  console.log('Context: 弹窗一 log')
+  return (
+    <Modal visible={visible} onCancel={hide} onOk={hide} title="简单示例">
+      这是弹窗一
+    </Modal>
+  )
+})
+
+const Page1 = () => {
+  console.log('Context: Page1 log')
+  const overlay = useOverlay('ModalOverlay1')
+
+  return (
+    <Button type="primary" onClick={() => overlay.show()}>
+      打开弹窗一
+    </Button>
+  )
+}
+
+const ModalOverlay2 = createOverlay('ModalOverlay2', ({ visible, hide, resolve }) => {
+  console.log('Context: 弹窗二 log')
+  return (
+    <Modal visible={visible} onCancel={hide} onOk={hide} title="简单示例">
+      这是弹窗二
+    </Modal>
+  )
+})
+
+const Page2 = () => {
+  console.log('Context: Page2 的 log')
+  const overlay = useOverlay('ModalOverlay2')
+
+  return (
+    <Button type="primary" onClick={() => overlay.show()}>
+      打开弹窗一
+    </Button>
+  )
+}
+
+export default () => {
+  return (
+    <OverlayProvider>
+      <Page1 />
+      <ModalOverlay1 />
+      <br />
+      <br />
+      <Page2 />
+      <ModalOverlay2 />
+    </OverlayProvider>
+  )
+}
+```
+
+### Redux 案例
+
+```jsx
+import React from 'react'
+import { Button, Modal } from 'antd'
+import 'antd/dist/antd.css'
+
+import { OverlayProvider, useOverlay, createOverlay } from './reduxOverlay.tsx'
+
+const ModalOverlay1 = createOverlay('ModalOverlay1', ({ visible, hide, resolve }) => {
+  console.log('Redux: 弹窗一 log')
+  return (
+    <Modal visible={visible} onCancel={hide} onOk={hide} title="简单示例">
+      这是弹窗一
+    </Modal>
+  )
+})
+
+const Page1 = () => {
+  console.log('Redux: Page1 log')
+  const overlay = useOverlay('ModalOverlay1')
+
+  return (
+    <Button type="primary" onClick={() => overlay.show()}>
+      打开弹窗一
+    </Button>
+  )
+}
+
+const ModalOverlay2 = createOverlay('ModalOverlay2', ({ visible, hide, resolve }) => {
+  console.log('Redux: 弹窗二 log')
+  return (
+    <Modal visible={visible} onCancel={hide} onOk={hide} title="简单示例">
+      这是弹窗一
+    </Modal>
+  )
+})
+
+const Page2 = () => {
+  console.log('Redux: Page2 log')
+  const overlay = useOverlay('ModalOverlay2')
+
+  return (
+    <Button type="primary" onClick={() => overlay.show()}>
+      打开弹窗二
+    </Button>
+  )
+}
+
+export default () => {
+  return (
+    <OverlayProvider>
+      <Page1 />
+      <ModalOverlay1 />
+      <br />
+      <br />
+      <Page2 />
+      <ModalOverlay2 />
     </OverlayProvider>
   )
 }
